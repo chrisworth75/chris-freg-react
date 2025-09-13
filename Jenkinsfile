@@ -69,60 +69,39 @@ pipeline {
             }
             steps {
                 script {
-                    // Use Docker to run Playwright tests to avoid environment issues
+                    // Wait for services to be ready
                     sh '''
-                        echo "🧪 Running E2E tests with Playwright for React app..."
-
-                        # Wait for both frontend and API to be ready
-                        echo "⏳ Waiting for services to be ready..."
-                        echo "🔍 Checking running containers:"
-                        docker ps
-
-                        for i in {1..60}; do
+                        echo "🔄 Waiting for React app and API to be ready..."
+                        timeout=60
+                        while [ $timeout -gt 0 ]; do
                             frontend_status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:4201 || echo "000")
                             api_status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5100/health || echo "000")
 
-                            echo "🔍 Attempt $i/60: React Frontend=$frontend_status, API=$api_status"
-
                             if [ "$frontend_status" = "200" ] && [ "$api_status" = "200" ]; then
-                                echo "✅ Both services are ready after $((i * 5)) seconds"
-                                echo "🌐 React Frontend response:"
-                                curl -s http://localhost:4201 | head -n 5
-                                echo "🔗 API response:"
-                                curl -s http://localhost:5100/health
+                                echo "✅ Both services are ready"
                                 break
-                            elif [ $i -eq 60 ]; then
-                                echo "❌ Services failed to become ready after 300 seconds"
-                                echo "🔍 Container logs:"
-                                docker logs chris-freg-react-frontend --tail 10 || true
-                                docker logs chris-freg-api --tail 10 || true
-                                exit 1
-                            else
-                                sleep 5
                             fi
+
+                            echo "⏳ React Frontend: $frontend_status, API: $api_status - waiting..."
+                            sleep 2
+                            timeout=$((timeout-2))
                         done
 
-                        # Run Playwright tests in Docker container
-                        echo "🐳 Starting Playwright Docker container for React tests..."
-                        docker run --rm \\
-                            --network host \\
-                            -v "$(pwd):/workspace" \\
-                            --workdir /workspace \\
-                            -e CI=true \\
-                            -e DEBUG=pw:* \\
-                            mcr.microsoft.com/playwright:v1.40.0-jammy sh -c "
-                                echo '📦 Installing dependencies...'
-                                npm ci
-                                echo '🎭 Installing Playwright browsers...'
-                                npx playwright install --with-deps chromium
-                                echo '📁 Creating output directories...'
-                                mkdir -p test-results playwright-report
-                                echo '🔍 Checking services from inside container...'
-                                curl -I http://localhost:4201 || echo 'React Frontend not accessible'
-                                curl -I http://localhost:5100/health || echo 'API not accessible'
-                                echo '🧪 Running Playwright tests on React app...'
-                                node_modules/.bin/playwright test --config=playwright.config.ts || echo 'Tests completed with exit code: \$?'
-                            "
+                        if [ $timeout -le 0 ]; then
+                            echo "❌ Services failed to start within timeout"
+                            exit 1
+                        fi
+                    '''
+
+                    // Run E2E tests with Node.js from nvm
+                    sh '''
+                        export PATH="/Users/chris/.nvm/versions/node/v18.17.1/bin:$PATH"
+                        echo "📍 Node.js version: $(node --version)"
+                        echo "📍 NPM version: $(npm --version)"
+                        echo "🧪 Installing Playwright browsers..."
+                        npx playwright install chromium
+                        echo "🚀 Running React E2E tests..."
+                        CI=true npx playwright test --reporter=line
                     '''
                 }
             }
