@@ -130,6 +130,7 @@ pipeline {
                         reportName: 'React Playwright Test Report',
                         reportTitles: 'React E2E Test Results'
                     ])
+                    allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
                 }
                 success {
                     echo '✅ All React E2E tests passed!'
