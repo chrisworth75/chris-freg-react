@@ -100,6 +100,12 @@ pipeline {
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
                         npm install --save-dev allure-playwright && npm install
+                        echo "--- ls -la ---"
+                        ls -la
+                        echo "--- ls -la node_modules ---"
+                        ls -la node_modules
+                        echo "--- ls -la node_modules/allure-playwright ---"
+                        ls -la node_modules/allure-playwright
                         echo "🧪 Installing Playwright browsers..."
                         npx playwright install chromium
                         echo "🚀 Running React E2E tests..."
