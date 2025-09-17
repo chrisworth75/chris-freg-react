@@ -102,6 +102,7 @@ pipeline {
                         npm install
                         echo "🧪 Installing Playwright browsers..."
                         npx playwright install chromium
+                        npx playwright install allure-playwright
                         echo "🚀 Running React E2E tests..."
                         CI=true npx playwright test e2e/fee-management.spec.ts --reporter=html,junit,allure-playwright
                     '''
