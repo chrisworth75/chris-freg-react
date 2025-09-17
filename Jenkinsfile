@@ -13,14 +13,6 @@ pipeline {
                 checkout scm
                 sh 'echo "Checked out React code successfully"'
             }
-            post {
-                always {
-                    sh '''
-                        export PATH="/Users/chris/.nvm/versions/node/v22.3.0/bin:$PATH"
-                        npm install
-                    '''
-                }
-            }
         }
 
         stage('Build Docker Image') {
@@ -107,9 +99,8 @@ pipeline {
                         echo "📍 Node.js version: $(node --version)"
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
+                        npm install
                         npm install allure-playwright
-                        echo "🧪 Installing Playwright browsers..."
-                        npx playwright install chromium
                         echo "🚀 Running React E2E tests..."
                         CI=true npx playwright test e2e/fee-management.spec.ts --reporter=html,junit,allure-playwright
                     '''
