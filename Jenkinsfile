@@ -103,7 +103,7 @@ pipeline {
                         echo "🧪 Installing Playwright browsers..."
                         npx playwright install chromium
                         echo "🚀 Running React E2E tests..."
-                        CI=true npx playwright test e2e/fee-management.spec.ts --reporter=line
+                        CI=true npx playwright test e2e/fee-management.spec.ts
                     '''
                 }
             }
