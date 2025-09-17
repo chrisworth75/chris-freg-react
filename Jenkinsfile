@@ -110,7 +110,7 @@ pipeline {
             post {
                 always {
                     // Archive test results and reports
-                    publishTestResults testResultsPattern: 'test-results/results.xml'
+                    junit testResults: 'test-results/results.xml', allowEmptyResults: true
 
                     // Archive all test artifacts including videos
                     archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true, fingerprint: true
