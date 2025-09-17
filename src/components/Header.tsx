@@ -12,11 +12,11 @@ const Header: React.FC = () => {
 
           {/* LEFT SIDE: Brand + vertical nav */}
           <div className="d-flex flex-column align-items-start">
-            <Link className="navbar-brand mb-2" to="/">MyApp</Link>
+            <Link className="navbar-brand mb-2" to="/">ChrisFreg React</Link>
             <ul className="navbar-nav flex-row">
               <li className="nav-item me-3">
                 <Link
-                  to="/fees"
+                  to="/"
                   className={`nav-link ${location.pathname === '/fees' || location.pathname === '/' ? 'active' : ''}`}
                 >
                   Fees
