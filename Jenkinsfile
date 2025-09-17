@@ -95,7 +95,7 @@ pipeline {
 
                     // Run E2E tests with Node.js from nvm
                     sh '''
-                        export PATH="/Users/chris/.nvm/versions/node/v18.19.1/bin:$PATH"
+                        export PATH="/Users/chris/.nvm/versions/node/v22.3.0/bin:$PATH"
                         echo "📍 Node.js version: $(node --version)"
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
