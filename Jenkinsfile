@@ -13,6 +13,14 @@ pipeline {
                 checkout scm
                 sh 'echo "Checked out React code successfully"'
             }
+            post {
+                always {
+                    sh '''
+                        export PATH="/Users/chris/.nvm/versions/node/v22.3.0/bin:$PATH"
+                        npm ci
+                    '''
+                }
+            }
         }
 
         stage('Build Docker Image') {
