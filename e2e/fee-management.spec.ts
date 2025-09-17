@@ -62,7 +62,7 @@ test.describe('Fee Management React App', () => {
     await page.click('button[type="submit"]');
 
     // Check validation messages appear
-    await expect(page.locator('.invalid-feedback')).toContainText('Code is required');
+    await expect(page.locator('#code + .invalid-feedback')).toContainText('Code is required');
   });
 
   test('should fill and validate create form', async ({ page }) => {
@@ -76,7 +76,7 @@ test.describe('Fee Management React App', () => {
 
     // Verify form fields are filled
     await expect(page.locator('#code')).toHaveValue('TEST001');
-    await expect(page.locator('#value')).toHaveValue('50');
+    await expect(page.locator('#value')).toHaveValue('50.00');
     await expect(page.locator('#description')).toHaveValue('Test fee description');
     await expect(page.locator('#status')).toHaveValue('draft');
   });
@@ -89,7 +89,7 @@ test.describe('Fee Management React App', () => {
     await page.click('button[type="submit"]');
 
     // Should show validation error for negative value
-    await expect(page.locator('.invalid-feedback')).toContainText('Amount must be greater than 0');
+    await expect(page.locator('#value + .invalid-feedback')).toContainText('Amount must be greater than 0');
   });
 
   test('should have refresh button on fee list', async ({ page }) => {
