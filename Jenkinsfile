@@ -100,6 +100,8 @@ pipeline {
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
                         npm install
+                        echo "--- npm root ---"
+                        npm root
                         echo "🧪 Installing Playwright browsers..."
                         npx playwright install chromium
                         echo "🚀 Running React E2E tests..."
