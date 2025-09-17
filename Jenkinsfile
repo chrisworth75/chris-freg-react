@@ -99,7 +99,7 @@ pipeline {
                         echo "📍 Node.js version: $(node --version)"
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
-                        npm install
+                        npm install --save-dev allure-playwright && npm install
                         echo "🧪 Installing Playwright browsers..."
                         npx playwright install chromium
                         echo "🚀 Running React E2E tests..."
