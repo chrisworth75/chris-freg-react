@@ -122,7 +122,7 @@ pipeline {
 
                     // Publish HTML reports
                     publishHTML([
-                        allowMissing: false,
+                        allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'playwright-report',
