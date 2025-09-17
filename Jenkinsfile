@@ -13,14 +13,6 @@ pipeline {
                 checkout scm
                 sh 'echo "Checked out React code successfully"'
             }
-            post {
-                always {
-                    sh '''
-                        export PATH="/Users/chris/.nvm/versions/node/v22.3.0/bin:$PATH"
-                        npm ci
-                    '''
-                }
-            }
         }
 
         stage('Build Docker Image') {
@@ -108,6 +100,7 @@ pipeline {
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
                         npm ci
+                        npm install allure-playwright
                         echo "🧪 Installing Playwright browsers..."
                         npx playwright install chromium
                         echo "🚀 Running React E2E tests..."
