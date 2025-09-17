@@ -9,13 +9,18 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<FeeList />} />
-            <Route path="/fees" element={<FeeList />} />
-            <Route path="/create" element={<FeeCreate />} />
-          </Routes>
+        <header>
+          <Header />
+        </header>
+
+        <main className="main">
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<FeeList />} />
+              <Route path="/fees" element={<FeeList />} />
+              <Route path="/create" element={<FeeCreate />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </Router>
