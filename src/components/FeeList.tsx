@@ -101,6 +101,7 @@ const FeeList: React.FC = () => {
             id={tab.id}
             role="tabpanel"
             aria-labelledby={`${tab.id}-tab`}
+            data-testid={`${tab.id}-fees`}
           >
             {filterFeesByTab(tab.id).length === 0 ? (
               <div className="text-center text-muted py-4">

@@ -16,7 +16,7 @@ test.describe('Fee Management React App', () => {
 
   test('should display the header with correct navigation', async ({ page }) => {
     await expect(page.locator('.navbar-brand')).toContainText('ChrisFreg React');
-    await expect(page.locator('a[href="/"]')).toContainText('Fees');
+    await expect(page.locator('.nav-link[href="/"]')).toContainText('Fees');
     await expect(page.locator('a[href="/create"]')).toContainText('Create Fee');
   });
 
