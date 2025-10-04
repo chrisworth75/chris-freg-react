@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Fee, CreateFeeRequest } from '../types/Fee';
 
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'http://localhost:5100'
-  : '/api';
+// Use /api for proxied requests through nginx in Docker
+// Use direct connection for local development
+const API_BASE_URL = process.env.REACT_APP_API_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
