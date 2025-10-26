@@ -59,7 +59,14 @@ pipeline {
             steps {
                 script {
                     sleep 10 // Wait for container to start
-                    sh 'curl -f http://localhost:4201 || echo "Health check failed - container may still be starting"'
+                    sh '''
+                        echo "🔍 Checking container status..."
+                        docker ps -a | grep chris-freg-react-frontend || echo "Container not found"
+                        echo "🔍 Checking container logs..."
+                        docker logs chris-freg-react-frontend || echo "Cannot get logs"
+                        echo "🔍 Testing health endpoint..."
+                        curl -f http://localhost:4201 || echo "Health check failed - container may still be starting"
+                    '''
                 }
             }
         }
@@ -101,9 +108,8 @@ pipeline {
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
                         npm install
-                        npm install allure-playwright
                         echo "🚀 Running React E2E tests..."
-                        CI=true npx playwright test e2e/fee-management.spec.ts --reporter=html,junit,allure-playwright
+                        CI=true npx playwright test e2e/fee-management.spec.ts --reporter=html,junit
                     '''
                 }
             }
@@ -130,7 +136,6 @@ pipeline {
                         reportName: 'React Playwright Test Report',
                         reportTitles: 'React E2E Test Results'
                     ])
-                    allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
                 }
                 success {
                     echo '✅ All React E2E tests passed!'
