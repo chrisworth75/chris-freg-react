@@ -108,8 +108,9 @@ pipeline {
                         echo "📍 NPM version: $(npm --version)"
                         echo "📦 Installing npm dependencies..."
                         npm install
+                        npm install allure-playwright
                         echo "🚀 Running React E2E tests..."
-                        CI=true npx playwright test e2e/fee-management.spec.ts --reporter=html,junit
+                        CI=true npx playwright test e2e/fee-management.spec.ts --reporter=html,junit,allure-playwright
                     '''
                 }
             }
@@ -136,6 +137,15 @@ pipeline {
                         reportName: 'React Playwright Test Report',
                         reportTitles: 'React E2E Test Results'
                     ])
+
+                    // Publish Allure report (if plugin is installed)
+                    script {
+                        try {
+                            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                        } catch (Exception e) {
+                            echo "⚠️ Allure plugin not installed - skipping Allure report"
+                        }
+                    }
                 }
                 success {
                     echo '✅ All React E2E tests passed!'
